@@ -7,7 +7,7 @@ import (
 )
 
 var cordonOptions = []prompt.Suggest{
-	prompt.Suggest{Text: "--dry-run", Description: "If true, only print the object that would be sent, without sending it."},
-	prompt.Suggest{Text: "-l", Description: "Selector (label query) to filter on"},
-	prompt.Suggest{Text: "--selector", Description: "Selector (label query) to filter on"},
+	prompt.Suggest{Text: "--dry-run", Description: "Must be \"none\", \"server\", or \"client\". If client strategy, only print the object that would be sent, without sending it. If server strategy, submit server-side request without persisting the resource."},
+	prompt.Suggest{Text: "-l", Description: "Selector (label query) to filter on, supports '=', '==', and '!='.(e.g. -l key1=value1,key2=value2). Matching objects must satisfy all of the specified label constraints. Usage:\n  kubectl cordon NODE [options] Use \"kubectl options\" for a list of global command-line options (applies to all commands)."},
+	prompt.Suggest{Text: "--selector", Description: "Selector (label query) to filter on, supports '=', '==', and '!='.(e.g. -l key1=value1,key2=value2). Matching objects must satisfy all of the specified label constraints. Usage:\n  kubectl cordon NODE [options] Use \"kubectl options\" for a list of global command-line options (applies to all commands)."},
 }

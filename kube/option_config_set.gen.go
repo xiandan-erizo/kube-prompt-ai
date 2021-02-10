@@ -7,5 +7,5 @@ import (
 )
 
 var configSetOptions = []prompt.Suggest{
-	prompt.Suggest{Text: "--set-raw-bytes", Description: "When writing a []byte PROPERTY_VALUE, write the given string directly without base64 decoding."},
+	prompt.Suggest{Text: "--set-raw-bytes", Description: "When writing a []byte PROPERTY_VALUE, write the given string directly without base64 decoding. Usage:\n  kubectl config set PROPERTY_NAME PROPERTY_VALUE [options] Use \"kubectl options\" for a list of global command-line options (applies to all commands)."},
 }

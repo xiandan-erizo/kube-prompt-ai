@@ -10,4 +10,8 @@ var configSetCredentialsOptions = []prompt.Suggest{
 	prompt.Suggest{Text: "--auth-provider", Description: "Auth provider for the user entry in kubeconfig"},
 	prompt.Suggest{Text: "--auth-provider-arg", Description: "'key=value' arguments for the auth provider"},
 	prompt.Suggest{Text: "--embed-certs", Description: "Embed client cert/key for the user entry in kubeconfig"},
+	prompt.Suggest{Text: "--exec-api-version", Description: "API version of the exec credential plugin for the user entry in kubeconfig"},
+	prompt.Suggest{Text: "--exec-arg", Description: "New arguments for the exec credential plugin command for the user entry in kubeconfig"},
+	prompt.Suggest{Text: "--exec-command", Description: "Command for the exec credential plugin for the user entry in kubeconfig"},
+	prompt.Suggest{Text: "--exec-env", Description: "'key=value' environment values for the exec credential plugin Usage:\n  kubectl config set-credentials NAME [--client-certificate=path/to/certfile] [--client-key=path/to/keyfile] [--token=bearer_token] [--username=basic_user] [--password=basic_password] [--auth-provider=provider_name] [--auth-provider-arg=key=value] [--exec-command=exec_command] [--exec-api-version=exec_api_version] [--exec-arg=arg] [--exec-env=key=value] [options] Use \"kubectl options\" for a list of global command-line options (applies to all commands)."},
 }

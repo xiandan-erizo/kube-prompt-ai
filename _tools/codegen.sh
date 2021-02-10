@@ -5,6 +5,7 @@ KUBE_DIR=$(cd $(dirname $(dirname $0)); pwd)/kube
 
 # clean generated files
 rm ${KUBE_DIR}/*.gen.go
+rm ${KUBE_DIR}/help.txt
 mkdir -p bin
 
 set -e
@@ -21,7 +22,7 @@ subcmds=(
     "edit"
     "apply"
     "logs"
-    "rolling-update"
+#    "rolling-update"
     "scale"
     "attach"
     "exec"
@@ -41,10 +42,10 @@ subcmds=(
     "drain"
     "uncordon"
     "annotate"
-    "convert"
+#    "convert"
     "top node"
     "top pod"
-    "cluster-info"
+#    "cluster-info"
     "config get-contexts"
     "config set"
     "config set-cluster"
@@ -57,4 +58,10 @@ for cmd in "${subcmds[@]}"; do
   snaked=`echo ${cmd} | gsed -r 's/[- ]/_/g'`
   kubectl ${cmd} --help | ./bin/option-gen -o ${KUBE_DIR}/option_${snaked}.gen.go -var ${camelized}Options
   goimports -w ${KUBE_DIR}/option_${snaked}.gen.go
+  echo "kubectl ${cmd}:" >> ${KUBE_DIR}/help.txt
+
+  cat << EOF >> "${KUBE_DIR}/help.txt"
+$(kubectl ${cmd} --help | ./bin/option-gen -var ${camelized}Options)
+EOF
+  echo "\n" >> ${KUBE_DIR}/help.txt
 done

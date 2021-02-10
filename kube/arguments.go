@@ -38,6 +38,8 @@ var commands = []prompt.Suggest{
 
 	// Custom command.
 	{Text: "exit", Description: "Exit this program"},
+	{Text: "exai", Description: "End talk to ai"},
+	{Text: "#ai", Description: "talk with ai"},
 }
 
 var resourceTypes = []prompt.Suggest{
@@ -201,6 +203,8 @@ func (c *Completer) argumentsCompleter(namespace string, args []string) []prompt
 				return prompt.FilterContains(getServiceSuggestions(c.client, namespace), third, true)
 			case "job", "jobs":
 				return prompt.FilterContains(getJobSuggestions(c.client, namespace), third, true)
+			case "cloneset":
+				return prompt.FilterContains(getClonesetListSuggestions(c.client, namespace), third, true)
 			}
 		}
 	case "describe":
@@ -254,6 +258,8 @@ func (c *Completer) argumentsCompleter(namespace string, args []string) []prompt
 				return prompt.FilterContains(getServiceSuggestions(c.client, namespace), third, true)
 			case "job", "jobs":
 				return prompt.FilterContains(getJobSuggestions(c.client, namespace), third, true)
+			case "cloneset":
+				return prompt.FilterContains(getClonesetListSuggestions(c.client, namespace), third, true)
 			}
 		}
 	case "create":
@@ -320,6 +326,8 @@ func (c *Completer) argumentsCompleter(namespace string, args []string) []prompt
 				return prompt.FilterContains(getServiceSuggestions(c.client, namespace), third, true)
 			case "job", "jobs":
 				return prompt.FilterContains(getJobSuggestions(c.client, namespace), third, true)
+			case "cloneset":
+				return prompt.FilterContains(getClonesetListSuggestions(c.client, namespace), third, true)
 			}
 		}
 	case "edit":
@@ -372,6 +380,8 @@ func (c *Completer) argumentsCompleter(namespace string, args []string) []prompt
 				return prompt.FilterContains(getServiceSuggestions(c.client, namespace), third, true)
 			case "job", "jobs":
 				return prompt.FilterContains(getJobSuggestions(c.client, namespace), third, true)
+			case "cloneset":
+				return prompt.FilterContains(getClonesetListSuggestions(c.client, namespace), third, true)
 			}
 		}
 

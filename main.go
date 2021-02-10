@@ -11,7 +11,6 @@ import (
 
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/oidc"
-	_ "k8s.io/client-go/plugin/pkg/client/auth/openstack"
 )
 
 var (
@@ -27,9 +26,10 @@ func main() {
 	}
 
 	defer debug.Teardown()
-	fmt.Printf("kube-prompt %s (rev-%s)\n", version, revision)
+	fmt.Printf("kube-prompt for ai %s (rev-%s)\n", version, revision)
 	fmt.Println("Please use `exit` or `Ctrl-D` to exit this program.")
-	defer fmt.Println("Bye!")
+	fmt.Println("input #AI to talk with AI🤖")
+	defer fmt.Println("Bye!👋🏻")
 	p := prompt.New(
 		kube.Executor,
 		c.Complete,

@@ -7,18 +7,31 @@ import (
 	prompt "github.com/c-bata/go-prompt"
 )
 
-func GetOptionsFromHelpText(help string) (options string, err error) {
+//func GetOptionsFromHelpText(help string) (options string, err error) {
+//	x := strings.Split(help, "\nOptions:")
+//	if len(x) < 2 {
+//		return "", errors.New("parse error")
+//	}
+//	y := strings.Split(x[1], "\n\n")
+//	options = strings.Trim(y[0], "\n")
+//	return options, nil
+//}
+
+func GetOptionsFromHelpTextNew(help string) (options string, err error) {
 	x := strings.Split(help, "\nOptions:")
 	if len(x) < 2 {
 		return "", errors.New("parse error")
 	}
 	y := strings.Split(x[1], "\n\n")
-	options = strings.Trim(y[0], "\n")
-	return options, nil
+	res := ""
+	for _, s := range y {
+		res += strings.Trim(s, "\n") + "\n\n"
+	}
+	return res, nil
 }
 
 func SplitOptions(options string) []string {
-	lines := strings.Split(options, "\n")
+	lines := strings.Split(options, "\n\n")
 	results := make([]string, 0, len(lines))
 	var index int
 	for _, l := range lines {
@@ -33,9 +46,9 @@ func SplitOptions(options string) []string {
 }
 
 func convertToSuggest(flagLine string) []prompt.Suggest {
-	x := strings.SplitN(flagLine, ": ", 2)
+	x := strings.SplitN(flagLine, ":\n", 2)
 	key := x[0]
-	description := x[1]
+	description := strings.TrimSpace(x[1])
 
 	var keys []string
 	if strings.Contains(key, ", ") {

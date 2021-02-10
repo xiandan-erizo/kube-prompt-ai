@@ -1,0 +1,106 @@
+package kube
+
+import (
+	"bytes"
+	"fmt"
+	"github.com/c-bata/kube-prompt/agent"
+	"github.com/tmc/langchaingo/llms"
+	"github.com/tmc/langchaingo/schema"
+	"os"
+	"os/exec"
+	"strings"
+
+	"github.com/c-bata/kube-prompt/internal/debug"
+)
+
+var talkFromAi = false
+var count = 0
+
+func Executor(s string) {
+	if strings.HasPrefix(s, "u:") || strings.HasPrefix(s, "user:") {
+		sSplit := strings.Split(s, ":")
+		sJoin := strings.Join(sSplit, ":")
+		trimSpace := strings.TrimSpace(sJoin)
+		trimRight := strings.TrimRight(trimSpace, ":")
+		if trimRight == "u" || trimRight == "user" {
+			trimRight = ""
+		}
+		aiCommand, err := agent.TalkToAi(trimRight)
+		if aiCommand == "" {
+			talkFromAi = false
+			count = 0
+			return
+		}
+		if err != nil {
+			fmt.Println("Error: ", err.Error())
+		} else {
+			talkFromAi = true
+			count++
+			if count > 10 {
+				fmt.Println("Too many times, bye!")
+				os.Exit(0)
+			}
+			Executor(aiCommand)
+		}
+
+	} else {
+		if _, err := execCmd(s); err != nil {
+			return
+		} else {
+			if talkFromAi {
+				Executor("u:")
+
+			}
+		}
+	}
+
+	return
+}
+
+func execCmd(s string) (string, error) {
+	if s == "" {
+		return "", nil
+	} else if s == "quit" || s == "exit" {
+		fmt.Println("Bye!")
+		os.Exit(0)
+		return "", nil
+	}
+
+	cmd := exec.Command("/bin/sh", "-c", "kubectl "+s)
+	cmd.Stdin = os.Stdin
+	//cmd.Stdout = os.Stdout
+	out := &bytes.Buffer{}
+	errCmd := &bytes.Buffer{}
+
+	cmd.Stdout = out
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("Got error: %s\n", err.Error())
+		agent.History.AddHistory(llms.TextParts(schema.ChatMessageTypeSystem, fmt.Sprintf("命令执出错了,请重新输入命令,错误如下:\n%s", string(errCmd.Bytes()))))
+		return string(errCmd.Bytes()), err
+	}
+	result := string(out.Bytes())
+	fmt.Printf(result)
+	agent.History.AddHistory(llms.TextParts(schema.ChatMessageTypeSystem, fmt.Sprintf("命令执行结果如下,你需要根据结果回答问题:\n%s", result)))
+
+	return result, nil
+}
+
+func ExecuteAndGetResult(s string) string {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		debug.Log("you need to pass the something arguments")
+		return ""
+	}
+
+	out := &bytes.Buffer{}
+	cmd := exec.Command("/bin/sh", "-c", "kubectl "+s)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = out
+	if err := cmd.Run(); err != nil {
+		debug.Log(err.Error())
+		return ""
+	}
+	r := string(out.Bytes())
+	return r
+}

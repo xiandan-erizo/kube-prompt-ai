@@ -8,4 +8,5 @@ import (
 
 var configSetClusterOptions = []prompt.Suggest{
 	prompt.Suggest{Text: "--embed-certs", Description: "embed-certs for the cluster entry in kubeconfig"},
+	prompt.Suggest{Text: "--proxy-url", Description: "proxy-url for the cluster entry in kubeconfig Usage:\n  kubectl config set-cluster NAME [--server=server] [--certificate-authority=path/to/certificate/authority] [--insecure-skip-tls-verify=true] [--tls-server-name=example.com] [options] Use \"kubectl options\" for a list of global command-line options (applies to all commands)."},
 }

@@ -7,7 +7,6 @@ import (
 )
 
 var explainOptions = []prompt.Suggest{
-	prompt.Suggest{Text: "--api-version", Description: "Get different explanations for particular API version"},
-	prompt.Suggest{Text: "--include-extended-apis", Description: "If true, include definitions of new APIs via calls to the API server. [default true]"},
-	prompt.Suggest{Text: "--recursive", Description: "Print the fields of fields (Currently only 1 level deep)"},
+	prompt.Suggest{Text: "--api-version", Description: "Get different explanations for particular API version (API group/version)"},
+	prompt.Suggest{Text: "--recursive", Description: "Print the fields of fields (Currently only 1 level deep) Usage:\n  kubectl explain RESOURCE [options] Use \"kubectl options\" for a list of global command-line options (applies to all commands)."},
 }

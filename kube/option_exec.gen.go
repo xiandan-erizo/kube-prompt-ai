@@ -7,12 +7,15 @@ import (
 )
 
 var execOptions = []prompt.Suggest{
-	prompt.Suggest{Text: "-c", Description: "Container name. If omitted, the first container in the pod will be chosen"},
-	prompt.Suggest{Text: "--container", Description: "Container name. If omitted, the first container in the pod will be chosen"},
-	prompt.Suggest{Text: "-p", Description: "Pod name"},
-	prompt.Suggest{Text: "--pod", Description: "Pod name"},
+	prompt.Suggest{Text: "-c", Description: "Container name. If omitted, use the kubectl.kubernetes.io/default-container annotation for selecting the container to be attached or the first container in the pod will be chosen"},
+	prompt.Suggest{Text: "--container", Description: "Container name. If omitted, use the kubectl.kubernetes.io/default-container annotation for selecting the container to be attached or the first container in the pod will be chosen"},
+	prompt.Suggest{Text: "-f", Description: "to use to exec into the resource"},
+	prompt.Suggest{Text: "--filename", Description: "to use to exec into the resource"},
+	prompt.Suggest{Text: "--pod-running-timeout", Description: "The length of time (like 5s, 2m, or 3h, higher than zero) to wait until at least one pod is running"},
+	prompt.Suggest{Text: "-q", Description: "Only print output from the remote session"},
+	prompt.Suggest{Text: "--quiet", Description: "Only print output from the remote session"},
 	prompt.Suggest{Text: "-i", Description: "Pass stdin to the container"},
 	prompt.Suggest{Text: "--stdin", Description: "Pass stdin to the container"},
-	prompt.Suggest{Text: "-t", Description: "Stdin is a TTY"},
-	prompt.Suggest{Text: "--tty", Description: "Stdin is a TTY"},
+	prompt.Suggest{Text: "-t", Description: "Stdin is a TTY Usage:\n  kubectl exec (POD | TYPE/NAME) [-c CONTAINER] [flags] -- COMMAND [args...] [options] Use \"kubectl options\" for a list of global command-line options (applies to all commands)."},
+	prompt.Suggest{Text: "--tty", Description: "Stdin is a TTY Usage:\n  kubectl exec (POD | TYPE/NAME) [-c CONTAINER] [flags] -- COMMAND [args...] [options] Use \"kubectl options\" for a list of global command-line options (applies to all commands)."},
 }

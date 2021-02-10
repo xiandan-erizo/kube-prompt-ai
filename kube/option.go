@@ -36,8 +36,8 @@ func optionCompleter(args []string, long bool) []prompt.Suggest {
 		suggests = applyOptions
 	case "logs":
 		suggests = logsOptions
-	case "rolling-update":
-		suggests = rollingUpdateOptions
+	//case "rolling-update":
+	//	suggests = rollingUpdateOptions
 	case "scale", "resize":
 		suggests = scaleOptions
 	case "attach":
@@ -71,8 +71,8 @@ func optionCompleter(args []string, long bool) []prompt.Suggest {
 		}
 	case "label":
 		suggests = labelOptions
-	case "cluster-info":
-		suggests = clusterInfoOptions
+	//case "cluster-info":
+	//	suggests = clusterInfoOptions
 	case "explain":
 		suggests = explainOptions
 	case "cordon":
@@ -83,8 +83,8 @@ func optionCompleter(args []string, long bool) []prompt.Suggest {
 		suggests = uncordonOptions
 	case "annotate":
 		suggests = annotateOptions
-	case "convert":
-		suggests = convertOptions
+	//case "convert":
+	//	suggests = convertOptions
 	case "top":
 		if len(commandArgs) >= 2 {
 			switch commandArgs[1] {

@@ -3,20 +3,35 @@ package kube
 import (
 	"bytes"
 	"fmt"
+	"github.com/c-bata/kube-prompt/agent"
+	"github.com/c-bata/kube-prompt/internal/debug"
 	"os"
 	"os/exec"
 	"strings"
-
-	"github.com/c-bata/kube-prompt/internal/debug"
 )
+
+var aiModel = false
 
 func Executor(s string) {
 	s = strings.TrimSpace(s)
 	if s == "" {
 		return
+	} else if strings.ToLower(s) == "#ai" {
+		fmt.Printf("进入ai对话模式")
+		agent.ChatHistory.Clear()
+		aiModel = true
+		return
 	} else if s == "quit" || s == "exit" {
 		fmt.Println("Bye!")
 		os.Exit(0)
+		return
+	} else if s == "exai" && aiModel {
+		agent.ChatHistory.Clear()
+		fmt.Println("退出ai对话模式\n")
+		aiModel = false
+		return
+	} else if aiModel && s != "" {
+		agent.Talk2AI(s, false, 0)
 		return
 	}
 
