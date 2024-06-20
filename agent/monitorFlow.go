@@ -76,31 +76,14 @@ func (m *MonitorFlow) Init(model string, maxHistory uint8, maxCounts uint8) erro
 
 var Client api.Client
 
+var Client api.Client
+
 func init() {
 	var err error
-	Client, err = CreatClient()
+	Client, err = createClient()
 	if err != nil {
-		fmt.Printf("Error creating client: %v\n", err)
+		log.Fatalf("Error creating client: %v\n", err)
 	}
-}
-
-type CustomRoundTripper struct {
-	Transport http.RoundTripper
-}
-
-func (c *CustomRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
-	au := "c3Vua2VzaTpTdW5AdmlhMDgxNEA="
-	req.Header.Set("Authorization", fmt.Sprintf("Basic %s", au))
-	return c.Transport.RoundTrip(req)
-}
-
-func createClient() (api.Client, error) {
-	return api.NewClient(api.Config{
-		Address: "http://prometheus-dd.ekuaibao.net/",
-		RoundTripper: &CustomRoundTripper{
-			Transport: http.DefaultTransport,
-		},
-	})
 }
 
 func monitorQueryRange(query string, step int) (string, error) {
