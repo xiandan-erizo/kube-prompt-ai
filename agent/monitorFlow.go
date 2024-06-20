@@ -44,11 +44,11 @@ func (m *MonitorFlow) Tools() []openai.Tool {
 				Enum: []string{"时间间隔"},
 			},
 		},
-		Required: []string{"flags", "options"},
+		Required: []string{"query", "step"},
 	}
 	monitorQueryRange := openai.FunctionDefinition{
 		Name:        "MonitorQueryRange",
-		Description: "执行kubectl命令,仅可执行get，describe，log等只读，不对集群修改的命令,注意,get describe等参数也要写不然工具不认",
+		Description: "执行PromQL查询，获取监控数据",
 		Parameters:  params,
 	}
 	t := openai.Tool{
@@ -89,37 +89,29 @@ type CustomRoundTripper struct {
 }
 
 func (c *CustomRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
-	// todo delete
-	//au := os.Getenv("Authorization")
 	au := "c3Vua2VzaTpTdW5AdmlhMDgxNEA="
 	req.Header.Set("Authorization", fmt.Sprintf("Basic %s", au))
 	return c.Transport.RoundTrip(req)
 }
 
-func CreatClient() (api.Client, error) {
-	client, err := api.NewClient(api.Config{
+func createClient() (api.Client, error) {
+	return api.NewClient(api.Config{
 		Address: "http://prometheus-dd.ekuaibao.net/",
 		RoundTripper: &CustomRoundTripper{
 			Transport: http.DefaultTransport,
 		},
 	})
-	if err != nil {
-		fmt.Printf("Error creating client: %v\n", err)
-		return nil, err
-	}
-	return client, nil
 }
 
-func MonitorQueryRange(query string, Step int) (string, error) {
+func monitorQueryRange(query string, step int) (string, error) {
 	v1api := proV1.NewAPI(Client)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	stepDuration := time.Duration(Step) * time.Minute
 
 	r := proV1.Range{
 		Start: time.Now().Add(-time.Hour),
 		End:   time.Now(),
-		Step:  stepDuration,
+		Step:  time.Duration(step) * time.Minute,
 	}
 
 	result, warnings, err := v1api.QueryRange(ctx, query, r, proV1.WithTimeout(5*time.Second))
@@ -127,43 +119,31 @@ func MonitorQueryRange(query string, Step int) (string, error) {
 		return "", err
 	}
 	if len(warnings) > 0 {
-		fmt.Printf("Warnings: %v\n", warnings)
+		log.Printf("Warnings: %v\n", warnings)
 	}
 
 	return processResult(result), nil
 }
 
-func timeS(timestampMs int64) string {
-	// 将Unix时间戳转换为time.Time类型
-	t := time.Unix(int64(timestampMs), 0)
-	// 格式化输出时间
-	return t.Format("2006-01-02 15:04:05")
-
-}
-
 func processResult(result model.Value) string {
-	var resultStr = ""
+	var resultStr strings.Builder
 	switch v := result.(type) {
 	case model.Vector:
 		for _, sample := range v {
-			//fmt.Printf("Metric: %+v, Value: %f\n", sample.Metric, sample.Value)
-			resultStr += fmt.Sprintf("Metric: %+v, Value: %f\n", sample.Metric, sample.Value)
+			resultStr.WriteString(fmt.Sprintf("Metric: %+v, Value: %f\n", sample.Metric, sample.Value))
 		}
 	case model.Matrix:
 		for _, series := range v {
-			fmt.Printf("Series for metric: %+v\n", series.Metric)
+			resultStr.WriteString(fmt.Sprintf("Series for metric: %+v\n", series.Metric))
 			for _, sample := range series.Values {
-				timestampMs := timeS(int64(sample.Timestamp) / 1000)
-				value := sample.Value
-				fmt.Printf("Timestamp: %s, Value: %f\n", timestampMs, value)
-				resultStr += fmt.Sprintf("Timestamp: %s, Value: %f\n", timestampMs, value)
+				timestamp := time.Unix(int64(sample.Timestamp)/1000, 0).Format("2006-01-02 15:04:05")
+				resultStr.WriteString(fmt.Sprintf("Timestamp: %s, Value: %f\n", timestamp, sample.Value))
 			}
 		}
 	default:
-		fmt.Printf("Unsupported result type: %T\n", v)
-		resultStr += fmt.Sprintf("Unsupported result type: %T\n", v)
+		resultStr.WriteString(fmt.Sprintf("Unsupported result type: %T\n", v))
 	}
-	return resultStr
+	return resultStr.String()
 }
 
 var promptMonitor = `
