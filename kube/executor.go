@@ -29,7 +29,7 @@ func Executor(s string) {
 		return
 	} else if s == "/clear" {
 		agent.ChatHistory.Clear("ops")
-		//agent.ChatHistory.Clear("flow")
+		//agent.ChatHeistory.Clear("flow")
 		agent.ChatHistory.Clear("monitor")
 		return
 	} else if s == "exai" && aiModel {
