@@ -16,3 +16,4 @@ pkg/
 
 # glide
 vendor/
+.aider*

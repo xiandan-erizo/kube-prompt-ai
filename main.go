@@ -34,7 +34,7 @@ func main() {
 		kube.Executor,
 		c.Complete,
 		prompt.OptionTitle("kube-prompt: interactive kubernetes client"),
-		prompt.OptionPrefix(">>> "),
+		prompt.OptionPrefix(fmt.Sprintf("%s>>> ", kube.InputModel)),
 		prompt.OptionInputTextColor(prompt.Yellow),
 		prompt.OptionCompletionWordSeparator(completer.FilePathCompletionSeparator),
 	)

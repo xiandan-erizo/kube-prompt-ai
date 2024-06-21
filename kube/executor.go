@@ -11,27 +11,37 @@ import (
 )
 
 var aiModel = false
+var InputModel = "user"
 
 func Executor(s string) {
 	s = strings.TrimSpace(s)
 	if s == "" {
 		return
 	} else if strings.ToLower(s) == "#ai" {
-		fmt.Printf("进入ai对话模式")
-		agent.ChatHistory.Clear()
+		fmt.Printf("进入ai对话模式\n")
+		InputModel = "User"
+		agent.ChatHistory.Clear("ops")
 		aiModel = true
 		return
 	} else if s == "quit" || s == "exit" {
 		fmt.Println("Bye!")
 		os.Exit(0)
 		return
+	} else if s == "/clear" {
+		agent.ChatHistory.Clear("ops")
+		//agent.ChatHistory.Clear("flow")
+		agent.ChatHistory.Clear("monitor")
+		return
 	} else if s == "exai" && aiModel {
-		agent.ChatHistory.Clear()
+		agent.ChatHistory.Clear("ops")
 		fmt.Println("退出ai对话模式\n")
 		aiModel = false
 		return
 	} else if aiModel && s != "" {
-		agent.Talk2AI(s, false, 0)
+		_, err := agent.FlowIns.Run(s)
+		if err != nil {
+			fmt.Printf("Got error: %s\n", err.Error())
+		}
 		return
 	}
 

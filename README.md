@@ -83,7 +83,7 @@ $ brew install c-bata/kube-prompt/kube-prompt
 #### Arch Linux
 
 An unofficial [AUR package](https://aur.archlinux.org/packages/kube-prompt) `kube-prompt`
-is available. Install instructions can be found on the [Arch 
+is available. Install instructions can be found on the [Arch
 wiki](https://wiki.archlinux.org/index.php/Arch_User_Repository#Installing_packages).
 
 #### Building from source
@@ -100,7 +100,8 @@ $ make cross
 
 ## Similar projects
 
-* [kube-shell](https://github.com/cloudnativelabs/kube-shell): An integrated shell for working with the Kubernetes written in Python using [python-prompt-toolkit](https://github.com/prompt-toolkit/python-prompt-toolkit).
+* [kube-shell](https://github.com/cloudnativelabs/kube-shell): An integrated shell for working with the Kubernetes
+  written in Python using [python-prompt-toolkit](https://github.com/prompt-toolkit/python-prompt-toolkit).
 
 ## Goal
 
@@ -150,3 +151,10 @@ Masashi Shibata
 ## LICENSE
 
 This software is licensed under the MIT License (See [LICENSE](./LICENSE)).
+
+## TODO
+
+* [ ]  历史消息压缩
+* [ ]  RAG支持
+* [ ]  支持更多工具例如监控
+* [ ]  支持workflow
