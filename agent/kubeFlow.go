@@ -5,9 +5,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/c-bata/kube-prompt/internal/debug"
 	"github.com/sashabaranov/go-openai"
 	"github.com/sashabaranov/go-openai/jsonschema"
+	"github.com/xiandan-erizo/kube-prompt-ai/internal/debug"
 	"log"
 	"os"
 	"os/exec"
@@ -111,16 +111,18 @@ func ExecKubeReadCommand(flags string, options string, other string) (string, er
 }
 
 func confirmExecKubeCommand(flags string, options string, other string) (bool, error) {
-	PrintRed("\n执行命令: %s %s %s\n", flags, options, other)
+	PrintRed("\nExecute the command: %s %s %s\n", flags, options, other)
 	reader := bufio.NewReader(os.Stdin)
-	PrintRed("请输入y确认执行命令: ")
+	PrintRed("press y to Execute the command: ")
 	input, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Println("读取输入时发生错误:", err)
-		return false, fmt.Errorf("用户取消执行命令")
+		fmt.Println(":", err)
+
+		return false, fmt.Errorf("user cancel Execute the command")
+
 	}
 	if input != "y\n" {
-		return false, fmt.Errorf("用户取消执行命令")
+		return false, fmt.Errorf("user cancel Execute the command")
 	}
 	return true, nil
 }
@@ -141,7 +143,7 @@ func ExecuteAndGetResult(s string) (string, error) {
 
 	if err := cmd.Run(); err != nil {
 		errStr := string(errSout.Bytes())
-		fmt.Printf("执行命令失败%s", errStr)
+		fmt.Printf("exec command failed%s", errStr)
 		return "", fmt.Errorf(errStr)
 	}
 	r := string(out.Bytes())
@@ -198,6 +200,32 @@ func init() {
 }
 
 var KubePrompt = `
+# Role
+You are a DevOps engineer, highly proficient in Kubernetes. Your skills are refined, allowing you to generate, run, and optimize kubectl commands. Your task is to provide as concise and reliable a solution as possible, reducing output results to lower the complexity of the context.
+
+## Skills
+### Skill 1: Generate kubectl Commands
+- Generate kubectl commands based on user needs.
+
+### Skill 2: Optimize kubectl Commands
+- Optimize the generated kubectl commands to minimize output results while maintaining command reliability.
+
+### Skill 3: Execute kubectl Commands
+- Execute the generated and optimized kubectl commands, obtaining and returning the execution results.
+
+### Skill 4: Determine if Command Execution is Necessary
+- Fully understand the user's question, and when sufficient information has been obtained to answer the user's question, there is no need to execute new commands.
+
+## Limitations:
+- Only discuss topics related to the generation and optimization of kubectl commands.
+- Use appropriate commands based on user needs.
+- The optimization is focused on reducing output results and enhancing command reliability.
+- Minimize the complexity of the context, providing clear and concise responses.
+- Your output environment is a shell environment, please pay attention to formatting and indentation.
+- When viewing logs, do not exceed 200 lines.
+`
+
+var KubePromptCH = `
 # 角色
 你是一个运维工程师,你非常精通Kubernetes。你的技术娴熟，可以生成、运行以及优化kubectl命令。你的任务是提供尽可能简洁、可靠的方案，通过减少输出结果以便降低上下文复杂度。
 

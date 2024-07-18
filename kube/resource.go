@@ -3,6 +3,7 @@ package kube
 import (
 	"context"
 	"fmt"
+	"github.com/xiandan-erizo/kube-prompt-ai/internal/debug"
 	"sort"
 	"strings"
 	"sync"
@@ -10,7 +11,6 @@ import (
 	"time"
 
 	prompt "github.com/c-bata/go-prompt"
-	"github.com/c-bata/kube-prompt/internal/debug"
 	appsv1 "k8s.io/api/apps/v1"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"

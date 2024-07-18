@@ -56,7 +56,7 @@ type Agent struct {
 func (a *Agent) RunAgent(userInput string, toolCall bool, currentCount int) {
 	currentCount++
 	if currentCount > maxCounts && toolCall {
-		fmt.Println("单次AI迭代超出次数限制,请重新开始对话")
+		fmt.Println("The number of iterations for a single AI session has exceeded the limit, please start the conversation again.\n")
 		ChatHistory.Clear(a.HisKey)
 		return
 	}
@@ -71,7 +71,7 @@ func (a *Agent) RunAgent(userInput string, toolCall bool, currentCount int) {
 	}
 	toolCall = false
 	if a.HisKey == "flow" {
-		fmt.Printf("AI>: %v", "生成中请稍等...\r")
+		fmt.Printf("AI>: %v", "AI generating please wait...\r")
 	}
 	resp, err := client.CreateChatCompletion(ctx,
 		openai.ChatCompletionRequest{

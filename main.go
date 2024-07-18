@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
+	"github.com/xiandan-erizo/kube-prompt-ai/internal/debug"
+	"github.com/xiandan-erizo/kube-prompt-ai/kube"
 	"os"
 
 	prompt "github.com/c-bata/go-prompt"
 	"github.com/c-bata/go-prompt/completer"
-	"github.com/c-bata/kube-prompt/internal/debug"
-	"github.com/c-bata/kube-prompt/kube"
 
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/oidc"

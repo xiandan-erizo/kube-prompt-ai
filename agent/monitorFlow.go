@@ -128,7 +128,7 @@ var Client api.Client
 
 var MonitorFlowIns = MonitorFlow{}
 
-func init() {
+func init22() {
 	var err error
 	Client, err = CreatClient()
 	if err != nil {
@@ -154,7 +154,7 @@ func (c *CustomRoundTripper) RoundTrip(req *http.Request) (*http.Response, error
 
 func CreatClient() (api.Client, error) {
 	client, err := api.NewClient(api.Config{
-		Address: "http://prometheus-dd.ekuaibao.net/",
+		Address: "",
 		RoundTripper: &CustomRoundTripper{
 			Transport: http.DefaultTransport,
 		},

@@ -1,4 +1,4 @@
-module github.com/c-bata/kube-prompt
+module github.com/xiandan-erizo/kube-prompt-ai
 
 require (
 	github.com/c-bata/go-prompt v0.2.5

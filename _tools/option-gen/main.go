@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/c-bata/kube-prompt/internal/optionconv"
+	"github.com/xiandan-erizo/kube-prompt-ai/internal/optionconv"
 )
 
 var (

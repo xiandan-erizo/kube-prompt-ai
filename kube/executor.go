@@ -3,8 +3,8 @@ package kube
 import (
 	"bytes"
 	"fmt"
-	"github.com/c-bata/kube-prompt/agent"
-	"github.com/c-bata/kube-prompt/internal/debug"
+	"github.com/xiandan-erizo/kube-prompt-ai/agent"
+	"github.com/xiandan-erizo/kube-prompt-ai/internal/debug"
 	"os"
 	"os/exec"
 	"strings"
@@ -18,7 +18,7 @@ func Executor(s string) {
 	if s == "" {
 		return
 	} else if strings.ToLower(s) == "#ai" {
-		fmt.Printf("进入ai对话模式\n")
+		fmt.Println("Enter AI Conversation Mode\r\n")
 		InputModel = "User"
 		agent.ChatHistory.Clear("ops")
 		aiModel = true
@@ -34,7 +34,7 @@ func Executor(s string) {
 		return
 	} else if s == "exai" && aiModel {
 		agent.ChatHistory.Clear("ops")
-		fmt.Println("退出ai对话模式\n")
+		fmt.Println("Exit AI Conversation Mode\n")
 		aiModel = false
 		return
 	} else if aiModel && s != "" {

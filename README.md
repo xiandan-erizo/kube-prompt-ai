@@ -2,6 +2,20 @@
 
 ![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)
 ![Go Report Card](https://goreportcard.com/badge/github.com/c-bata/kube-prompt)
+## AI 
+#### what's new about kube-prompt-ai?  
+
+you can use #AI command in kube-prompt-ai and then you can use AI to managing a Kubernetes (K8s) cluster
+
+####  example:
+
+export openai config
+```shell
+export OPENAI_API_KEY=sk-************
+export OPENAI_API_BASE=https://xxx.com/v1
+```
+#### use #AI command
+![demo](./assets/ai.gif)
 
 An interactive kubernetes client featuring auto-complete using [go-prompt](https://github.com/c-bata/go-prompt).
 
